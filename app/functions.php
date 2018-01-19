@@ -1,6 +1,9 @@
 <?php
 
-function show ($content)
+if (! function_exists('show'))
 {
-    echo "<p>{$content}</p>";
+    function show ($content)
+    {
+        echo "<p>{$content}</p>";
+    }
 }

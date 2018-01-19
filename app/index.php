@@ -2,13 +2,28 @@
 
 include '../vendor/autoload.php';
 
-use App\Electric;
-use App\Water;
 use App\MegaEvolution;
 use App\LinealEvolution;
+use App\Pokemon;
+use App\Attack;
 
-$raichu = new Electric("Raichu");
-$squirtle = new Water("Squirtle");
+$electricPokemonAttacks = [
+    new Attack("Bola Voltio", 40),
+    new Attack("Onda Trueno", 16),
+    new Attack("Chispazo", 35),
+    new Attack("Rayo", 65),
+];
+
+$waterPokemonAttacks = [
+    new Attack("Fuerza", 80),
+    new Attack("Puño Dinámico", 90),
+    new Attack("Cascada", 40),
+    new Attack("Buceo", 30),
+];
+
+$raichu = new Pokemon("Raichu", $electricPokemonAttacks);
+
+$squirtle = new Pokemon("Squirtle", $waterPokemonAttacks);
 
 $raichu->attack($squirtle);
 
@@ -19,8 +34,6 @@ $raichu->attack($squirtle);
 $raichu->setEvolution(new MegaEvolution);
 
 $squirtle->attack($raichu);
-
-$raichu->setEvolution(new LinealEvolution);
 
 $raichu->attack($squirtle);
 

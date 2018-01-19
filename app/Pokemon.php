@@ -4,16 +4,16 @@ namespace App;
 
 use App\Contracts\Evolution;
 
-abstract class Pokemon
+class Pokemon
 {
     private $name;
     private $hp = 100;
-    protected $power = 10;
     private $evolution = null;
 
-    public function __construct($name)
+    public function __construct($name, array $attacks)
     {
         $this->name = $name;
+        $this->attacks = $attacks;
     }
 
     public function setHp($hp)
@@ -21,24 +21,26 @@ abstract class Pokemon
         $this->hp = $hp;
     }
 
-    public function getPower()
+    public function chooseAttack()
     {
-        if ($this->evolution)
+        $attack = array_rand($this->attacks, 1);
+
+        return $this->attacks[$attack];
+    }
+
+    public function getHp()
+    {
+        if ($this->dead())
         {
-            return $this->evolution->powerUp($this->power);
+            return 0;
         }
 
-        return $this->power;
+        return $this->hp;
     }
 
     public function setEvolution(Evolution $evolution = null)
     {
         $this->evolution = $evolution;
-    }
-
-    public function getHp()
-    {
-        return $this->hp;
     }
 
     public function getName()
@@ -48,8 +50,32 @@ abstract class Pokemon
 
     public function dead()
     {
-        return $this->getHp() < 1;
+        return $this->hp < 1;
     }
 
-    abstract public function attack (Pokemon $opponent);
+    public function takeDamage(Pokemon $attacker)
+    {
+        $power = $attacker->chooseAttack()->getPower();
+
+        if ($this->evolution)
+        {
+            $power = $this->evolution->powerUp($power);
+        }
+
+        $this->setHp($this->getHp() - $power);
+
+        show("{$attacker->getName()} uso {$attacker->chooseAttack()->getName()}, {$this->getName()} tiene {$this->getHp()}/100 puntos de vida");
+    }
+
+    public function attack(Pokemon $opponent)
+    {
+        $opponent->takeDamage($this);
+
+        if ($opponent->dead())
+        {
+            show("{$opponent->getName()} ha muerto! (x_x)");
+
+            die();
+        }
+    }
 }
