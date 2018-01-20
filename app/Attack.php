@@ -19,6 +19,11 @@ class Attack
         return $this->name;
     }
 
+    public function setPower($power)
+    {
+        return $power;
+    }
+
     public function getPower()
     {
         return $this->power;

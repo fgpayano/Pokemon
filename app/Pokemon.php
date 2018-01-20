@@ -4,21 +4,25 @@ namespace App;
 
 use App\Contracts\Evolution;
 
+use App\Evolutions\MissingEvolution;
+
 class Pokemon
 {
-    private $name;
+    private $name = "";
     private $hp = 100;
     private $evolution = null;
+    private $attacks = array();
 
     public function __construct($name, array $attacks)
     {
         $this->name = $name;
         $this->attacks = $attacks;
+        $this->evolution = new MissingEvolution();
     }
 
     public function setHp($hp)
     {
-        $this->hp = $hp;
+        $this->hp = avoidNegative($hp, 0);
     }
 
     public function chooseAttack()
@@ -30,11 +34,6 @@ class Pokemon
 
     public function getHp()
     {
-        if ($this->dead())
-        {
-            return 0;
-        }
-
         return $this->hp;
     }
 
@@ -53,18 +52,20 @@ class Pokemon
         return $this->hp < 1;
     }
 
+    private function makeAttackFromEvolution(Attack $attack)
+    {
+        return $this->evolution->powerUp($attack);
+    }
+
     public function takeDamage(Pokemon $attacker)
     {
-        $power = $attacker->chooseAttack()->getPower();
+        $attack = $attacker->chooseAttack();
 
-        if ($this->evolution)
-        {
-            $power = $this->evolution->powerUp($power);
-        }
+        $attack = $this->makeAttackFromEvolution($attack);
 
-        $this->setHp($this->getHp() - $power);
+        $this->setHp($this->getHp() - $attack->getPower());
 
-        show("{$attacker->getName()} uso {$attacker->chooseAttack()->getName()}, {$this->getName()} tiene {$this->getHp()}/100 puntos de vida");
+        show("{$attacker->getName()} uso {$attack->getName()}, {$this->getName()} tiene {$this->getHp()}/100 puntos de vida");
     }
 
     public function attack(Pokemon $opponent)

@@ -7,3 +7,11 @@ if (! function_exists('show'))
         echo "<p>{$content}</p>";
     }
 }
+
+if (! function_exists('avoidNegative'))
+{
+    function avoidNegative($number)
+    {
+        return max($number, 0);
+    }
+}

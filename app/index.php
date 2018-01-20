@@ -2,10 +2,10 @@
 
 include '../vendor/autoload.php';
 
-use App\MegaEvolution;
-use App\LinealEvolution;
-use App\Pokemon;
 use App\Attack;
+use App\Pokemon;
+use App\Evolutions\MegaEvolution;
+use App\Evolutions\LinealEvolution;
 
 $electricPokemonAttacks = [
     new Attack("Bola Voltio", 40),
@@ -36,6 +36,8 @@ $raichu->setEvolution(new MegaEvolution);
 $squirtle->attack($raichu);
 
 $raichu->attack($squirtle);
+
+$squirtle->setEvolution(new LinealEvolution);
 
 $squirtle->attack($raichu);
 
