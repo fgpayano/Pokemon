@@ -1,9 +1,12 @@
 <?php
 
-include '../vendor/autoload.php';
+include './vendor/autoload.php';
 
+use App\Log;
 use App\Attack;
 use App\Pokemon;
+use App\HtmlLogger;
+use App\FileLogger;
 use App\Evolutions\MegaEvolution;
 use App\Evolutions\LinealEvolution;
 
@@ -20,6 +23,8 @@ $waterPokemonAttacks = [
     new Attack("Cascada", 40),
     new Attack("Buceo", 30),
 ];
+
+Log::setLogger(new HtmlLogger);
 
 $raichu = new Pokemon("Raichu", $electricPokemonAttacks);
 

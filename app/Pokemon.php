@@ -8,10 +8,13 @@ use App\Evolutions\MissingEvolution;
 
 class Pokemon
 {
-    private $name = "";
     private $hp = 100;
+    private $name = "";
+	private $attacks = [];
     private $evolution = null;
-    private $attacks = array();
+	
+	const MIN_HP = 0;
+	const MAX_RESULTS = 1;
 
     public function __construct($name, array $attacks)
     {
@@ -22,19 +25,19 @@ class Pokemon
 
     public function setHp($hp)
     {
-        $this->hp = avoidNegative($hp, 0);
+        $this->hp = $hp;
     }
 
     public function chooseAttack()
     {
-        $attack = array_rand($this->attacks, 1);
+        $attack = array_rand($this->attacks, static::MAX_RESULTS);
 
         return $this->attacks[$attack];
     }
 
     public function getHp()
     {
-        return $this->hp;
+        return max($this->hp, static::MIN_HP);
     }
 
     public function setEvolution(Evolution $evolution = null)
@@ -49,7 +52,7 @@ class Pokemon
 
     public function dead()
     {
-        return $this->hp < 1;
+        return $this->hp <= static::MIN_HP;
     }
 
     private function makeAttackFromEvolution(Attack $attack)
@@ -65,7 +68,7 @@ class Pokemon
 
         $this->setHp($this->getHp() - $attack->getPower());
 
-        show("{$attacker->getName()} uso {$attack->getName()}, {$this->getName()} tiene {$this->getHp()}/100 puntos de vida");
+		Log::info("{$attacker->getName()} uso {$attacker->chooseAttack()->getName()}, {$this->getName()} tiene {$this->getHp()}/100 puntos de vida");
     }
 
     public function attack(Pokemon $opponent)
@@ -74,7 +77,7 @@ class Pokemon
 
         if ($opponent->dead())
         {
-            show("{$opponent->getName()} ha muerto! (x_x)");
+			Log::info("{$opponent->getName()} ha muerto! (x_x)");
 
             die();
         }

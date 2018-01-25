@@ -1,17 +1,9 @@
 <?php
 
-if (! function_exists('show'))
+if (! function_exists("getDateTime"))
 {
-    function show ($content)
-    {
-        echo "<p>{$content}</p>";
-    }
-}
-
-if (! function_exists('avoidNegative'))
-{
-    function avoidNegative($number)
-    {
-        return max($number, 0);
-    }
+	function getDateTime()
+	{
+		return date("d/m/Y h:m:s");
+	}
 }
