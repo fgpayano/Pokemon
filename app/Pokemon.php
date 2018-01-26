@@ -8,11 +8,11 @@ use App\Evolutions\MissingEvolution;
 
 class Pokemon
 {
-    private $hp = 100;
-    private $name = "";
+	private $hp = 100;
+	private $name = "";
 	private $attacks = [];
-    private $evolution = null;
-	
+	private $evolution = null;
+
 	const MIN_HP = 0;
 	const MAX_RESULTS = 1;
 
@@ -68,7 +68,7 @@ class Pokemon
 
         $this->setHp($this->getHp() - $attack->getPower());
 
-		Log::info("{$attacker->getName()} uso {$attacker->chooseAttack()->getName()}, {$this->getName()} tiene {$this->getHp()}/100 puntos de vida");
+		Log::info("{$attacker->getName()} uso {$attacker->chooseAttack()->getName()}, {$this->getName()} tiene {$this->getHp()}/100 puntos de vida"); 
     }
 
     public function attack(Pokemon $opponent)
