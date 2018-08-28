@@ -13,8 +13,8 @@ class FileLogger implements Logger
 	public function info($message)
 	{
 		file_put_contents(
-			$this->getFileLocation(), 
-			$this->getMessageWithTime($message), 
+			$this->getFileLocation(),
+			$this->getMessageWithTime($message),
 			FILE_APPEND
 		);
 	}
@@ -33,6 +33,6 @@ class FileLogger implements Logger
 
 	public function getMessageWithTime($message)
 	{
-		return getDateTime()." - {$message}\n";
-	}	
+		return get_date_time()." - {$message}\n";
+	}
 }
